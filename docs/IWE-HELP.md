@@ -2,6 +2,7 @@
 
 > Краткая справка по Intellectual Work Environment (IWE) для поиска и ответов бота.
 > Полная установка: [SETUP-GUIDE.md](SETUP-GUIDE.md)
+> Не на macOS или не Claude Code? → **[PORTABILITY.md](PORTABILITY.md)**
 >
 > **Source-of-truth:** Pack-сущности платформы (доступны через Gateway `iwe-knowledge`):
 > - `DP.IWE.001` — что такое IWE, зачем, архитектура
@@ -152,7 +153,7 @@ bash update.sh --check  # проверить без применения
 
 **Claude Code не запускается** — проверь подписку Anthropic и `claude --version`. Начинать можно с Pro plan ($20/мес). При необходимости — Max (~$100/мес).
 
-**Стратег не формирует план** — проверь `launchctl list | grep strategist` (macOS). Если нет — `bash roles/strategist/install.sh`.
+**Стратег не формирует план** — macOS: `launchctl list | grep strategist`. Linux: `systemctl --user list-timers | grep strategist`. Если нет — `bash roles/strategist/install.sh`.
 
 **MEMORY.md не загружается** — проверь путь: `~/.claude/projects/-Users-<username>-IWE/memory/MEMORY.md`. Имя директории = путь к workspace через дефисы.
 
