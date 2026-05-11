@@ -10,11 +10,16 @@
 
 set -euo pipefail
 
-# Guard: валидация IWE_TEMPLATE (не должна быть временной директорией)
+# Guard: валидация IWE_TEMPLATE и IWE_WORKSPACE (не должны быть временными директориями)
 if [[ "${IWE_TEMPLATE:-}" =~ ^/tmp/iwe-smoke ]]; then
     echo "[ERROR] IWE_TEMPLATE указывает на удалённую smoke-тестовую директорию: $IWE_TEMPLATE" >&2
     echo "Используется fallback: \$HOME/IWE/FMT-exocortex-template" >&2
     unset IWE_TEMPLATE
+fi
+if [[ "${IWE_WORKSPACE:-}" =~ ^/tmp/iwe-smoke ]]; then
+    echo "[ERROR] IWE_WORKSPACE указывает на удалённую smoke-тестовую директорию: $IWE_WORKSPACE" >&2
+    echo "Используется fallback: \$HOME/IWE" >&2
+    unset IWE_WORKSPACE
 fi
 
 IWE="${IWE_WORKSPACE:-$HOME/IWE}"
