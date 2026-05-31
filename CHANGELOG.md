@@ -41,10 +41,12 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 
 
+
 ## [Unreleased] — обновлено 2026-05-31
 
 ### Added
 
+- `f47bf49` feat(WP-348): promote apply-captures defer_until invariant to L1
 - `bc5686f` feat(L1): B-005 reliability обхода Backlog и pending-фаз
 - `fbc5585` feat(L1): promote DP.D.052 v2 формулировок из peer-сессии 2026-05-31-11
 - `64276ac` feat(WP-372): promote personal-guide-render SKILL.md — narrative 4 уровней
@@ -96,6 +98,7 @@ Versioning: [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- `22cdd0d` chore(WP-377): R29 Детектор → R47 в hooks/lib/detectors
 - `b9e1658` docs(release): метрика fix-коммитов в RELEASE-PROCESS.md (PD-4, WP-347)
 - `33537d6` docs(promotion): B12 class + pair-on-promote convention (PZ-5)
 - `f1caefd` improve(peer): adversarial prompt — критик обязан найти хотя бы одно возражение
