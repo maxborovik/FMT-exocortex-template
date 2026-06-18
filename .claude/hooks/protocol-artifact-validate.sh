@@ -53,16 +53,18 @@ if [ -n "$DAYPLAN" ]; then
 
 # Required sections (parameterized — update this list when format changes).
 # Scout раздел опционален: проверяется отдельно ниже (см. блок "Scout").
+# Bilingual: each entry is a Russian|English alternation (matched with grep -E).
+# English-everywhere pilots use the right-hand labels.
 SECTIONS=(
-  "План на сегодня"
-  "Календарь"
-  "IWE за ночь"
-  "Разбор заметок"
-  "Итоги вчера"
+  "План на сегодня|Plan for today"
+  "Календарь|Calendar"
+  "IWE за ночь|IWE overnight"
+  "Разбор заметок|Notes triage"
+  "Итоги вчера|Yesterday's results"
 )
 
 for section in "${SECTIONS[@]}"; do
-  if ! grep -q "$section" "$DAYPLAN"; then
+  if ! grep -qE "$section" "$DAYPLAN"; then
     MISSING+=("$section")
   fi
 done
@@ -77,7 +79,7 @@ fi
 
 # --- Ф3 Check 2: непустые обязательные секции ---
 # Календарь: должна содержать хотя бы одну строку с | (таблица) или "нет событий"
-CALENDAR_CONTENT=$(awk '/Календарь/,/^<\/details>/' "$DAYPLAN" 2>/dev/null | wc -l || echo 0)
+CALENDAR_CONTENT=$(awk '/Календарь|Calendar/,/^<\/details>/' "$DAYPLAN" 2>/dev/null | wc -l || echo 0)
 if [ "$CALENDAR_CONTENT" -lt 3 ]; then
   ERRORS+=("Секция 'Календарь' пустая или слишком короткая (${CALENDAR_CONTENT} строк)")
 fi
@@ -96,12 +98,14 @@ if ! grep -qE "~[0-9]+\.?[0-9]*x" "$DAYPLAN"; then
 fi
 
 # --- Ф3 Check 4 (legacy): mandatory check и бюджет ---
-if ! grep -qi "mandatory" "$DAYPLAN"; then
-  ERRORS+=("Mandatory check (WP-7 + контентный РП) не найден")
+# Bilingual: accept the English "(fixed)" daily-item marker as well as "mandatory".
+if ! grep -qiE "mandatory|\(fixed\)|обязательн" "$DAYPLAN"; then
+  ERRORS+=("Mandatory/fixed daily-item check не найден (ожидается 'mandatory' или '(fixed)')")
 fi
 
-if ! grep -qE "~[0-9]+\.?[0-9]*h РП" "$DAYPLAN"; then
-  ERRORS+=("Бюджет дня не в формате '~Xh РП / ~Yh физ'")
+# Bilingual budget: accept "~Xh РП" or "~Xh WP" / "~Xh work".
+if ! grep -qE "~[0-9]+\.?[0-9]*h (РП|WP|work)" "$DAYPLAN"; then
+  ERRORS+=("Бюджет дня не в формате '~Xh РП|WP / ~Yh физ|physical'")
 fi
 
 # --- Ф3 Check 5: Carry-over цитата (если есть предыдущий DayPlan) ---
